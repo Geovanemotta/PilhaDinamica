@@ -1,73 +1,70 @@
-// Classe Nó
-class Node {
-  constructor(valor) {
-    this.valor = valor;
-    this.proximo = null;
+// Classe Nó da pilha: 
+class NoPilha {
+    valor;            
+    proximoNo = null;
   }
-}
-
-// Classe Pilha Dinâmica
-class Pilha {
-  constructor() {
-    this.topo = null;
+  
+  // Classe Pilha Dinâmica:
+  class PilhaDinamica {
+    topoDaPilha = null; 
+  
+    adicionarNoTopo(valor) {
+      const novoNo = new NoPilha();
+      novoNo.valor = valor;           
+      novoNo.proximoNo = this.topoDaPilha;
+      this.topoDaPilha = novoNo;
+    }
+  
+    removerDoTopo() {
+      if (this.topoDaPilha === null) {  
+        alert("A pilha está vazia!");
+        return;
+      }
+      const valorRemovido = this.topoDaPilha.valor;
+      this.topoDaPilha = this.topoDaPilha.proximoNo;
+      return valorRemovido;
+    }
+  
+    obterTodosOsValores() {
+      const valores = [];
+      let noAtual = this.topoDaPilha;
+      while (noAtual) {
+        valores.push(noAtual.valor);
+        noAtual = noAtual.proximoNo;
+      }
+      return valores;
+    }
   }
-
-  push(valor) {
-    const novoNo = new Node(valor);
-    novoNo.proximo = this.topo;
-    this.topo = novoNo;
-  }
-
-  pop() {
-    if (this.topo === null) {
-      alert("A pilha está vazia!");
+  
+  // Instância da pilha
+  const pilha = new PilhaDinamica();
+  
+  // Funções da interface
+  function empilhar() {
+    const valor = document.getElementById('inputValor').value.trim();
+    if (valor === '') {
+      alert("Digite um valor para empilhar.");
       return;
     }
-    const valorRemovido = this.topo.valor;
-    this.topo = this.topo.proximo;
-    return valorRemovido;
+    pilha.adicionarNoTopo(valor);
+    document.getElementById('inputValor').value = '';
+    atualizarVisual();
   }
-
-  toArray() {
-    const elementos = [];
-    let atual = this.topo;
-    while (atual) {
-      elementos.push(atual.valor);
-      atual = atual.proximo;
-    }
-    return elementos;
+  
+  function desempilhar() {
+    pilha.removerDoTopo();
+    atualizarVisual();
   }
-}
-
-// Instância da pilha
-const pilha = new Pilha();
-
-// Funções para a interface
-function empilhar() {
-  const valor = document.getElementById('inputValor').value.trim();
-  if (valor === '') {
-    alert("Digite um valor para empilhar.");
-    return;
+  
+  function atualizarVisual() {
+    const pilhaVisual = document.getElementById('pilhaVisual');
+    pilhaVisual.innerHTML = '';
+  
+    const elementos = pilha.obterTodosOsValores();
+    elementos.forEach(valor => {
+      const noDiv = document.createElement('div');
+      noDiv.className = 'node';
+      noDiv.innerText = valor;
+      pilhaVisual.appendChild(noDiv);
+    });
   }
-  pilha.push(valor);
-  document.getElementById('inputValor').value = '';
-  atualizarVisual();
-}
-
-function desempilhar() {
-  pilha.pop();
-  atualizarVisual();
-}
-
-function atualizarVisual() {
-  const pilhaVisual = document.getElementById('pilhaVisual');
-  pilhaVisual.innerHTML = '';
-
-  const elementos = pilha.toArray();
-  elementos.forEach(valor => {
-    const noDiv = document.createElement('div');
-    noDiv.className = 'node';
-    noDiv.innerText = valor;
-    pilhaVisual.appendChild(noDiv);
-  });
-}

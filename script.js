@@ -1,31 +1,31 @@
-// Classe Nó da pilha: 
-class NoPilha {
-    valor;            
-    proximoNo = null;
+// Função para criar um nó
+function criarNo(valor, proximo) {
+    return {
+      valor: valor,
+      proximoNo: proximo || null
+    };
   }
   
-  // Classe Pilha Dinâmica:
-  class PilhaDinamica {
-    topoDaPilha = null; 
+  // Objeto Pilha Dinâmica
+  const pilha = {
+    topoDaPilha: null,
   
-    adicionarNoTopo(valor) {
-      const novoNo = new NoPilha();
-      novoNo.valor = valor;           
-      novoNo.proximoNo = this.topoDaPilha;
+    adicionarNoTopo: function (valor) {
+      const novoNo = criarNo(valor, this.topoDaPilha);
       this.topoDaPilha = novoNo;
-    }
+    },
   
-    removerDoTopo() {
-      if (this.topoDaPilha === null) {  
+    removerDoTopo: function () {
+      if (this.topoDaPilha === null) {
         alert("A pilha está vazia!");
         return;
       }
       const valorRemovido = this.topoDaPilha.valor;
       this.topoDaPilha = this.topoDaPilha.proximoNo;
       return valorRemovido;
-    }
+    },
   
-    obterTodosOsValores() {
+    obterTodosOsValores: function () {
       const valores = [];
       let noAtual = this.topoDaPilha;
       while (noAtual) {
@@ -34,12 +34,8 @@ class NoPilha {
       }
       return valores;
     }
-  }
+  };
   
-  // Instância da pilha
-  const pilha = new PilhaDinamica();
-  
-  // Funções da interface
   function empilhar() {
     const valor = document.getElementById('inputValor').value.trim();
     if (valor === '') {
@@ -68,3 +64,4 @@ class NoPilha {
       pilhaVisual.appendChild(noDiv);
     });
   }
+  
